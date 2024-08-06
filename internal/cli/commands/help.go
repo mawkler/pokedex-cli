@@ -3,7 +3,7 @@ package commands
 import (
 	"fmt"
 
-	"github.com/mawkler/pokedex-cli/cli"
+	"github.com/mawkler/pokedex-cli/internal/cli"
 )
 
 func Help(config *cli.Config) error {

@@ -3,7 +3,7 @@ package commands
 import (
 	"os"
 
-	"github.com/mawkler/pokedex-cli/cli"
+	"github.com/mawkler/pokedex-cli/internal/cli"
 )
 
 func Exit(_ *cli.Config) error {

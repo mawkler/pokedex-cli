@@ -3,8 +3,8 @@ package commands
 import (
 	"fmt"
 
-	"github.com/mawkler/pokedex-cli/cli"
 	"github.com/mawkler/pokedex-cli/internal"
+	"github.com/mawkler/pokedex-cli/internal/cli"
 )
 
 func updateConfig(page *internal.LocationAreasPage, cfg *cli.Config) {

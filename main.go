@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/mawkler/pokedex-cli/cli"
-	"github.com/mawkler/pokedex-cli/cli/commands"
+	"github.com/mawkler/pokedex-cli/internal/cli"
+	"github.com/mawkler/pokedex-cli/internal/cli/commands"
 )
 
 func main() {

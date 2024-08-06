@@ -1,7 +1,7 @@
 package commands
 
 import (
-	"github.com/mawkler/pokedex-cli/cli"
+	"github.com/mawkler/pokedex-cli/internal/cli"
 )
 
 type Command struct {
