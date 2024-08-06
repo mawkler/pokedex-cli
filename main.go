@@ -6,12 +6,14 @@ import (
 	"log"
 	"os"
 
-	"pokedex-cli/cli"
+	"github.com/mawkler/pokedex-cli/cli"
+	"github.com/mawkler/pokedex-cli/cli/commands"
 )
 
 func main() {
+	cfg := cli.NewConfig()
 	scanner := bufio.NewScanner(os.Stdin)
-	cliCommands := cli.NewCLICommandMap()
+	cliCommands := commands.NewCLICommandMap()
 
 	println("Welcome to the Pokedex!")
 
@@ -34,7 +36,7 @@ func main() {
 			continue
 		}
 
-		if err := command.Run(); err != nil {
+		if err := command.Run(&cfg); err != nil {
 			fmt.Println(err)
 		}
 	}
