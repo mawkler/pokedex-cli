@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"log"
 	"os"
 
@@ -15,17 +16,26 @@ func main() {
 	println("Welcome to the Pokedex!")
 
 	for {
+		print("Pokedex > ")
 		scanner.Scan()
 		if err := scanner.Err(); err != nil {
 			log.Fatal(err)
 		}
 
 		input := scanner.Text()
-		command, ok := cliCommands[input]
-		if !ok {
-			log.Default().Fatalf("Command not found: %s", input)
+
+		if len(input) == 0 {
+			continue
 		}
 
-		command.Run()
+		command, ok := cliCommands[input]
+		if !ok {
+			fmt.Printf("Command not found: %s", input)
+			continue
+		}
+
+		if err := command.Run(); err != nil {
+			fmt.Println(err)
+		}
 	}
 }

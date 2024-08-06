@@ -24,6 +24,7 @@ func commandHelp() error {
 }
 
 func commandExit() error {
+	println("Bye!")
 	os.Exit(0)
 	return nil
 }
