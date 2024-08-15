@@ -5,13 +5,13 @@ import (
 )
 
 type Command struct {
-	callback    func(*cli.Config) error
+	callback    func(*cli.Config, ...string) error
 	name        string
 	description string
 }
 
-func (cmd *Command) Run(cfg *cli.Config) error {
-	return cmd.callback(cfg)
+func (cmd *Command) Run(cfg *cli.Config, input ...string) error {
+	return cmd.callback(cfg, input...)
 }
 
 func NewCLICommandMap() map[string]Command {
@@ -35,6 +35,11 @@ func NewCLICommandMap() map[string]Command {
 			name:        "mapb",
 			description: "List 20 previous location areas",
 			callback:    Mapb,
+		},
+		"explore": {
+			name:        "explore",
+			description: "Explore a given location",
+			callback:    Explore,
 		},
 	}
 }

@@ -17,34 +17,66 @@ type LocationAreasPage struct {
 	Count int `json:"count"`
 }
 
-func GetLocationAreas(url string) (*LocationAreasPage, error) {
+type LocationArea struct {
+	PokemonEncounters []struct {
+		Pokemon struct {
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"pokemon"`
+	} `json:"pokemon_encounters"`
+}
+
+func get[T any](url string) (*T, error) {
 	res, err := http.Get(url)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get location areas: %s", err)
+		return nil, fmt.Errorf("get failed: %s", err)
 	}
 
 	body, err := io.ReadAll(res.Body)
 	res.Body.Close()
 
 	if err != nil {
-		return nil, fmt.Errorf("failed to get location areas: could not read body: %s", err)
+		return nil, fmt.Errorf("get failed: could not read body: %s", err)
+	}
+
+	if res.StatusCode == 404 {
+		return nil, nil
 	}
 
 	if res.StatusCode >= 300 {
-		msg := "failed to get location areas: response failed with status code: %d and\nbody: %s"
+		msg := "get failed: response failed with status code: %d and body: %s"
 		return nil, fmt.Errorf(msg, res.StatusCode, body)
 	}
 
-	page := LocationAreasPage{}
-	if err := json.Unmarshal(body, &page); err != nil {
-		return nil, fmt.Errorf("failed to get location areas: failed to unmarshal body: %s", err)
+	var result T
+	if err := json.Unmarshal(body, &result); err != nil {
+		return nil, fmt.Errorf("get failed: failed to unmarshal body: %s", err)
 	}
 
-	return &page, nil
+	return &result, nil
+}
+
+func GetLocationAreas(url string) (*LocationAreasPage, error) {
+	page, err := get[LocationAreasPage](url)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get location areas: %s", err)
+	}
+
+	return page, nil
 }
 
 func (page *LocationAreasPage) Print() {
 	for _, area := range page.Results {
 		fmt.Println(area.Name)
 	}
+}
+
+func GetLocationArea(locationArea string) (*LocationArea, error) {
+	url := fmt.Sprintf("https://pokeapi.co/api/v2/location-area/%s/", locationArea)
+	location, err := get[LocationArea](url)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get location area %s: %s", locationArea, err)
+	}
+
+	return location, nil
 }

@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/mawkler/pokedex-cli/internal"
@@ -28,20 +29,29 @@ func mapAndUpdateConfig(url *string, cfg *cli.Config) error {
 		return err
 	}
 
+	if page == nil {
+		return errors.New("page not found")
+	}
+
 	updateConfig(page, cfg)
 
 	page.Print()
 	return nil
 }
 
-func Map(cfg *cli.Config) error {
-	return mapAndUpdateConfig(cfg.Next, cfg)
+func Map(cfg *cli.Config, _ ...string) error {
+	if cfg.Next == nil && cfg.Previous != nil {
+		return fmt.Errorf("already on the last page")
+	}
+	if cfg.Next != nil {
+	}
+	err := mapAndUpdateConfig(cfg.Next, cfg)
+	return err
 }
 
-func Mapb(cfg *cli.Config) error {
+func Mapb(cfg *cli.Config, _ ...string) error {
 	if cfg.Previous == nil {
-		fmt.Println("Already on the first page")
-		return nil
+		return fmt.Errorf("already on the first page")
 	}
 
 	return mapAndUpdateConfig(cfg.Previous, cfg)
