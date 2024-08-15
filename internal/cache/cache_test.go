@@ -73,9 +73,8 @@ func TestPurge(t *testing.T) {
 	})
 
 	t.Run("Purge cache with reap loop", func(t *testing.T) {
-		cache := NewCache(time.Millisecond * 10)
+		cache := NewCache(interval)
 		cache.Add("key", []byte("value"))
-		cache.reapLoop()
 
 		assert.Equal(t, 1, len(cache.cache))
 
