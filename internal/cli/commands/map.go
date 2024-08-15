@@ -4,11 +4,11 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/mawkler/pokedex-cli/internal"
 	"github.com/mawkler/pokedex-cli/internal/cli"
+	"github.com/mawkler/pokedex-cli/internal/pokeapi"
 )
 
-func updateConfig(page *internal.LocationAreasPage, cfg *cli.Config) {
+func updateConfig(page *pokeapi.LocationAreasPage, cfg *cli.Config) {
 	if page.Next != nil {
 		cfg.Next = page.Next
 	}
@@ -24,7 +24,7 @@ func mapAndUpdateConfig(url *string, cfg *cli.Config) error {
 		url = &defaultURL
 	}
 
-	page, err := internal.GetLocationAreas(*url)
+	page, err := pokeapi.GetLocationAreas(*url)
 	if err != nil {
 		return err
 	}
