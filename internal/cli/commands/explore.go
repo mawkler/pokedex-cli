@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/mawkler/pokedex-cli/internal/cli"
-	"github.com/mawkler/pokedex-cli/internal/pokeapi"
 )
 
 func Explore(cfg *cli.Config, args ...string) error {
@@ -13,7 +12,7 @@ func Explore(cfg *cli.Config, args ...string) error {
 	}
 
 	location := args[0]
-	locationArea, err := pokeapi.GetLocationArea(location)
+	locationArea, err := cfg.Client.GetLocationArea(location)
 	if err != nil {
 		return fmt.Errorf("exploration failed: %s", err)
 	}

@@ -23,8 +23,17 @@ type LocationArea struct {
 	} `json:"pokemon_encounters"`
 }
 
-func GetLocationAreas(url string) (*LocationAreasPage, error) {
-	page, err := get[LocationAreasPage](url)
+func (client *Client) GetLocationAreas(url string) (*LocationAreasPage, error) {
+	data, err := client.get(url)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get location areas: %s", err)
+	}
+
+	if data == nil {
+		return nil, nil
+	}
+
+	page, err := unmarshal[LocationAreasPage](*data)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get location areas: %s", err)
 	}
@@ -38,9 +47,19 @@ func (page *LocationAreasPage) Print() {
 	}
 }
 
-func GetLocationArea(locationArea string) (*LocationArea, error) {
+func (client *Client) GetLocationArea(locationArea string) (*LocationArea, error) {
 	url := fmt.Sprintf("https://pokeapi.co/api/v2/location-area/%s/", locationArea)
-	location, err := get[LocationArea](url)
+	data, err := client.get(url)
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to get location area %s: %s", locationArea, err)
+	}
+
+	if data == nil {
+		return nil, nil
+	}
+
+	location, err := unmarshal[LocationArea](*data)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get location area %s: %s", locationArea, err)
 	}

@@ -24,7 +24,7 @@ func mapAndUpdateConfig(url *string, cfg *cli.Config) error {
 		url = &defaultURL
 	}
 
-	page, err := pokeapi.GetLocationAreas(*url)
+	page, err := cfg.Client.GetLocationAreas(*url)
 	if err != nil {
 		return err
 	}

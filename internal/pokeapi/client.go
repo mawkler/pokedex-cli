@@ -5,9 +5,34 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+
+	"github.com/mawkler/pokedex-cli/internal/cache"
 )
 
-func get[T any](url string) (*T, error) {
+type Client struct {
+	client http.Client
+	cache  cache.Cache
+}
+
+func NewClient(client http.Client, cache cache.Cache) Client {
+	return Client{client, cache}
+}
+
+func unmarshal[T any](data []byte) (*T, error) {
+	var result T
+	if err := json.Unmarshal(data, &result); err != nil {
+		return nil, fmt.Errorf("get failed: failed to unmarshal body: %s", err)
+	}
+
+	return &result, nil
+}
+
+func (client *Client) get(url string) (*[]byte, error) {
+	entry, exists := client.cache.Get(url)
+	if exists {
+		return &entry, nil
+	}
+
 	res, err := http.Get(url)
 	if err != nil {
 		return nil, fmt.Errorf("get failed: %s", err)
@@ -29,10 +54,7 @@ func get[T any](url string) (*T, error) {
 		return nil, fmt.Errorf(msg, res.StatusCode, body)
 	}
 
-	var result T
-	if err := json.Unmarshal(body, &result); err != nil {
-		return nil, fmt.Errorf("get failed: failed to unmarshal body: %s", err)
-	}
+	client.cache.Add(url, body)
 
-	return &result, nil
+	return &body, nil
 }

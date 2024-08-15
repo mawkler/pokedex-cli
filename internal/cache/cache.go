@@ -35,8 +35,8 @@ func (cache *Cache) Get(key string) ([]byte, bool) {
 	cache.lock.Lock()
 	defer cache.lock.Unlock()
 
-	entry, ok := cache.cache[key]
-	return entry.value, ok
+	entry, exists := cache.cache[key]
+	return entry.value, exists
 }
 
 func (cache *Cache) purge() {
