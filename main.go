@@ -13,6 +13,7 @@ import (
 	"github.com/mawkler/pokedex-cli/internal/cli"
 	"github.com/mawkler/pokedex-cli/internal/cli/commands"
 	"github.com/mawkler/pokedex-cli/internal/pokeapi"
+	"github.com/mawkler/pokedex-cli/internal/pokedex"
 )
 
 func evaluate(input string, cfg *cli.Config, cliCommands map[string]commands.Command) error {
@@ -56,7 +57,8 @@ func repl(scanner *bufio.Scanner, cfg cli.Config, cliCommands map[string]command
 func main() {
 	cache := cache.NewCache(time.Minute * 2)
 	client := pokeapi.NewClient(*http.DefaultClient, cache)
-	cfg := cli.NewConfig(client)
+	pokedex := pokedex.NewPokedex()
+	cfg := cli.NewConfig(client, pokedex)
 
 	scanner := bufio.NewScanner(os.Stdin)
 	cliCommands := commands.NewCLICommandMap()

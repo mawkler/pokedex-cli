@@ -23,6 +23,7 @@ func Catch(cfg *cli.Config, args ...string) error {
 	}
 
 	if pokemon.BaseExperience > rand.Intn(500) {
+		cfg.Pokedex.Add(pokemon.Name, *pokemon)
 		fmt.Printf("%s was caught!\n", pokemon.Name)
 	} else {
 		fmt.Printf("%s escaped!\n", pokemon.Name)
