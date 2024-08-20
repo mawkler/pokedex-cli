@@ -56,7 +56,8 @@ func repl(scanner *bufio.Scanner, cfg cli.Config, cliCommands map[string]command
 
 func main() {
 	cache := cache.NewCache(time.Minute * 2)
-	client := pokeapi.NewClient(*http.DefaultClient, cache)
+	pokeApiUrl := "https://pokeapi.co/api/v2"
+	client := pokeapi.NewClient(pokeApiUrl, *http.DefaultClient, cache)
 	pokedex := pokedex.NewPokedex()
 	cfg := cli.NewConfig(client, pokedex)
 

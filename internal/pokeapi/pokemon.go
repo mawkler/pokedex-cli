@@ -8,7 +8,7 @@ type Pokemon struct {
 }
 
 func (client *Client) GetPokmeon(name string) (*Pokemon, error) {
-	url := fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/%s/", name)
+	url := fmt.Sprintf("%s/pokemon/%s/", client.baseUrl, name)
 	data, err := client.get(url)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get pokemon %s: %s", name, err)

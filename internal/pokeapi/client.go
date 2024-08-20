@@ -10,12 +10,13 @@ import (
 )
 
 type Client struct {
-	client http.Client
-	cache  cache.Cache
+	baseUrl string
+	client  http.Client
+	cache   cache.Cache
 }
 
-func NewClient(client http.Client, cache cache.Cache) Client {
-	return Client{client, cache}
+func NewClient(baseUrl string, client http.Client, cache cache.Cache) Client {
+	return Client{baseUrl, client, cache}
 }
 
 func unmarshal[T any](data []byte) (*T, error) {
