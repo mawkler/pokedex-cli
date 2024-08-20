@@ -22,7 +22,7 @@ func Catch(cfg *cli.Config, args ...string) error {
 		return fmt.Errorf("pokemon %s not found", pokemonName)
 	}
 
-	if pokemon.BaseExperience > rand.Intn(500) {
+	if pokemon.BaseExperience < rand.Intn(500) {
 		cfg.Pokedex.Add(pokemon.Name, *pokemon)
 		fmt.Printf("%s was caught!\n", pokemon.Name)
 	} else {
