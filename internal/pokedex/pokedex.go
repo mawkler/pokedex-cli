@@ -23,3 +23,11 @@ func (pdx *Pokedex) Get(name string) *types.Pokemon {
 		return nil
 	}
 }
+
+func (pdx *Pokedex) GetAllNames() (pokemons []string) {
+	for pokemon := range pdx.pokemon {
+		pokemons = append(pokemons, pokemon)
+	}
+
+	return pokemons
+}
