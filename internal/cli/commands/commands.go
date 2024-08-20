@@ -46,5 +46,10 @@ func NewCLICommandMap() map[string]Command {
 			description: "Catch a given pokemon",
 			callback:    Catch,
 		},
+		"inspect": {
+			name:        "inspect",
+			description: "Inspect a given pokemon",
+			callback:    Inspect,
+		},
 	}
 }
